@@ -1,3 +1,9 @@
+/*
+ * Labo: mandelbrot
+ * Release date: october 2022
+ * Project: A small mandelbrot implementation in the command line in C++
+ * Authors: Guillaume Gonin and Samuel Roland
+ */
 #include <iostream>
 
 // Implementation of this pseudocode:
