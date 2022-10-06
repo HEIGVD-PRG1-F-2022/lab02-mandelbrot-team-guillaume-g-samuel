@@ -31,11 +31,20 @@ int generate(int pX, int pY, int nX, int nY) {
     return iteration;
 }
 
+void color(int val) {
+    int colors[] = {31, 32, 33, 34, 35, 30, 36};
+    int color = (val == max_iteration) ? 33 : 35;
+    std::cout << "\033[33;" << color << "m"
+              << "."
+              << "\033[0m";
+}
+
 void displayArray(std::vector<std::vector<int>> array) {
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array[x].size(); y++) {
-            std::cout << "[" << ((array[x][y] == 1000) ? 0 : array[x][y])
-                      << "]";
+            // std::cout << "[" << ((array[x][y] == 1000) ? 0 : array[x][y])
+            //           << "]";
+            color(array[x][y]);
             // std::cout << (array[x][y] > 1 ? "X" : " ");
         }
         std::cout << std::endl;
@@ -43,6 +52,7 @@ void displayArray(std::vector<std::vector<int>> array) {
 }
 
 int main() {
+
     int width = 60, height = 60;
     std::vector<std::vector<int>> array(width, std::vector<int>(height, 0));
     for (int x = 0; x < array.size(); x++) {
