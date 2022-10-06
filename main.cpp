@@ -8,10 +8,16 @@
 #include <vector>
 
 const int max_iteration = 1000;
+const double x1 = -2;
+const double y1 = 1.12;
+const double x2 = 0.47;
+const double y2 = -1.12;
 
 // Implementation of this pseudocode:
 // https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings
-int generate(int x0, int y0) {
+int generate(int pX, int pY, int nX, int nY) {
+    double x0 = x1 + (x2 - x1) / nX * pX;
+    double y0 = y1 + (y2 - y1) / nY * pY;
     double x = 0.0;
     double y = 0.0;
     int iteration = 0;
@@ -28,18 +34,21 @@ int generate(int x0, int y0) {
 void displayArray(std::vector<std::vector<int>> array) {
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array[x].size(); y++) {
-            std::cout << "["<< array[x][y] << "]";
+            std::cout << "[" << ((array[x][y] == 1000) ? 0 : array[x][y])
+                      << "]";
+            // std::cout << (array[x][y] > 1 ? "X" : " ");
         }
         std::cout << std::endl;
     }
 }
 
 int main() {
-    int width = 100, height = 100;
+    int width = 60, height = 60;
     std::vector<std::vector<int>> array(width, std::vector<int>(height, 0));
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array[x].size(); y++) {
-            array[x][y] = generate(x, y);
+
+            array[x][y] = generate(x, y, width, height);
         }
     }
 
