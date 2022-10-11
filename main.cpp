@@ -16,17 +16,13 @@ const double y2 = -1.12;
 
 // Implementation of this pseudocode:
 // https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings
-int generate(int pX, int pY, int nX, int nY, double levelOfZoom) {
-    double x0 = (x1 + ((((x2 - x1)/levelOfZoom) / nX) * pX));
-    double y0 = (y1 + ((((y2 - y1)/levelOfZoom) / nY) * pY));
-    double x = 0.0;
-    double y = 0.0;
+int generate(int x, int y) {
 
     int iteration = 0;
     int xTemp;
     while (x * x + y * y <= 2 * 2 && iteration < max_iteration) {
-        xTemp = x * x - y * y + x0;
-        y = 2 * x * y + y0;
+        xTemp = x * x - y * y;
+        y = 2 * x * y;
         x = xTemp;
         iteration++;
     }
@@ -52,18 +48,42 @@ void displayArray(std::vector<std::vector<int>> array) {
     }
 }
 
-int main() {
+std::vector<std::vector<int>> calcRect (std::array<double, 2> p1, std::array<double, 2> p2){
 
     int width = 60, height = 60;
     std::vector<std::vector<int>> array(width, std::vector<int>(height, 0));
+
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array[x].size(); y++) {
 
-            array[x][y] = generate(y, x, height, width, 0.7);
+
+            array[x][y] = generate(y, x);
         }
     }
 
-    displayArray(array);
+    return array;
+
+}
+
+int main() {
+
+//  nX,      nY,   levelOfZoom, FocusPoint
+// height, width,      0.7,       {0, 0}
+    /*
+    double intervaleOfX = (x2 - x1)/levelOfZoom / nX;
+    double intervaleOfY = (y2 - y1)/levelOfZoom / nY;
+
+    double x0;
+    double y0 = focusPoint.at(1) + intervaleOfY * pY;
+
+    if (focusPoint.at(0) - x1 > intervaleOfX * pX)
+        x0 = x1 + intervaleOfX * pX;*/
+
+
+
+    std::array<double, 2> p1 = {x1, y1}, p2 = {x2, y2};
+
+    displayArray(calcRect(p1, p2));
 
     return 0;
 }
