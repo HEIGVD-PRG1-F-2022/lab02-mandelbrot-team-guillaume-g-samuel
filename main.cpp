@@ -16,11 +16,12 @@ const double y2 = -1.12;
 
 // Implementation of this pseudocode:
 // https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings
-int generate(int pX, int pY, int nX, int nY) {
-    double x0 = x1 + (x2 - x1) / nX * pX;
-    double y0 = y1 + (y2 - y1) / nY * pY;
+int generate(int pX, int pY, int nX, int nY, double levelOfZoom) {
+    double x0 = (x1 + ((((x2 - x1)/levelOfZoom) / nX) * pX));
+    double y0 = (y1 + ((((y2 - y1)/levelOfZoom) / nY) * pY));
     double x = 0.0;
     double y = 0.0;
+
     int iteration = 0;
     int xTemp;
     while (x * x + y * y <= 2 * 2 && iteration < max_iteration) {
@@ -33,10 +34,10 @@ int generate(int pX, int pY, int nX, int nY) {
 }
 
 void color(int val) {
-    std::array<int, 7> colors = {30, 36, 32, 31, 33, 34, 35};
-    int color = (val == max_iteration) ? 35 : colors.at(val % 6);
+    std::array<int, 7> colors = {34, 30, 36, 32, 31, 33, 35};
+    int color = (val == max_iteration) ? 35 : colors.at(val%6);
     std::cout << "\033[33;" << color << "m"
-              << "."
+              << "@@"
               << "\033[0m";
 }
 
@@ -46,7 +47,6 @@ void displayArray(std::vector<std::vector<int>> array) {
             // std::cout << "[" << ((array[x][y] == 1000) ? 0 : array[x][y])
             //           << "]";
             color(array[x][y]);
-            // std::cout << (array[x][y] > 1 ? "X" : " ");
         }
         std::cout << std::endl;
     }
@@ -59,7 +59,7 @@ int main() {
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array[x].size(); y++) {
 
-            array[x][y] = generate(x, y, width, height);
+            array[x][y] = generate(y, x, height, width, 0.7);
         }
     }
 
