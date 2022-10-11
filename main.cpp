@@ -6,6 +6,7 @@
  */
 #include <iostream>
 #include <vector>
+#include <array>
 
 const int max_iteration = 1000;
 const double x1 = -2;
@@ -32,8 +33,8 @@ int generate(int pX, int pY, int nX, int nY) {
 }
 
 void color(int val) {
-    int colors[] = {31, 32, 33, 34, 35, 30, 36};
-    int color = (val == max_iteration) ? 33 : 35;
+    std::array<int, 7> colors = {30, 36, 32, 31, 33, 34, 35};
+    int color = (val == max_iteration) ? 35 : colors.at(val % 6);
     std::cout << "\033[33;" << color << "m"
               << "."
               << "\033[0m";
