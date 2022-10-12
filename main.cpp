@@ -58,8 +58,7 @@ void displayArray(std::vector<std::vector<int>> array) {
         << std::endl;
 }
 
-double calculateGraphX(int xRef, double x1, double x2, double levelOfZoom,
-                       int numberOfX) {
+double calculateGraphX(int xRef, double x1, double x2, int numberOfX) {
     /* nX,      nY,   levelOfZoom, FocusPoint
      height, width,      0.7,       {0, 0}*/
     double intervaleOfX = (x2 - x1) / numberOfX;
@@ -71,33 +70,41 @@ double calculateGraphX(int xRef, double x1, double x2, double levelOfZoom,
            x0 = x1 + intervaleOfX * pX;*/
 }
 
-double calculateGraphY(int yRef, double y1, double y2, double levelOfZoom,
-                       int numberOfY) {
+double calculateGraphY(int yRef, double y1, double y2, int numberOfY) {
     double intervaleOfY = (y2 - y1) / numberOfY;
 
     return y1 + intervaleOfY * yRef;
 }
 
-std::vector<std::vector<int>> generateMandelbrot(std::array<double, 2> p1,
-                                                 std::array<double, 2> p2,
-                                                 double levelOfZoom) {
+std::vector<std::vector<int>>
+calcRect(std::array<double, 2> p1, std::array<double, 2> p2, int nX, int nY) {
 
-    int width = 60, height = 60;
-    std::vector<std::vector<int>> array(width, std::vector<int>(height, 0));
+    std::vector<std::vector<int>> array(nX, std::vector<int>(nY, 0));
 
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array.at(0).size(); y++) {
 
-            double graphX = calculateGraphX(x, p1.at(0), p2.at(0), levelOfZoom,
-                                            array.size() - 1);
-            double graphY = calculateGraphY(y, p1.at(1), p2.at(1), levelOfZoom,
-                                            array.at(0).size() - 1);
+            double graphX =
+                calculateGraphX(x, p1.at(0), p2.at(0), array.size() - 1);
+            double graphY =
+                calculateGraphY(y, p1.at(1), p2.at(1), array.at(0).size() - 1);
 
             array.at(x).at(y) = generate(graphX, graphY);
         }
     }
 
     return array;
+}
+
+std::vector<std::vector<int>> calcRect(std::array<double, 2> pC, double width,
+                                       double height, int nX, int nY,
+                                       double zoom) {
+    std::array<double, 2> p1 = {pC.at(0) - (width / 2) / zoom,
+                                pC.at(1) + (height / 2) / zoom},
+                          p2 = {pC.at(0) + (width / 2) / zoom,
+                                pC.at(1) - (height / 2) / zoom};
+
+    return calcRect(p1, p2, nX, nY);
 }
 
 int main() {
@@ -112,12 +119,8 @@ int main() {
 
     std::array<double, 2> center = {offesetX, offesetY};
 
-    std::array<double, 2> p1 = {x1 / levelOfZoom + center.at(0),
-                                y1 / levelOfZoom + center.at(1)},
-                          p2 = {x2 / levelOfZoom + center.at(0),
-                                y2 / levelOfZoom + center.at(1)};
+    displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, levelOfZoom));
 
-    displayArray(generateMandelbrot(p1, p2, levelOfZoom));
     std::string input;
     std::getline(std::cin, input);
     while (true) {
@@ -149,9 +152,7 @@ int main() {
             return EXIT_SUCCESS;
         }
         center = {offesetX, offesetY};
-        p1 = {x1 / levelOfZoom + center.at(0), y1 / levelOfZoom + center.at(1)},
-        p2 = {x2 / levelOfZoom + center.at(0), y2 / levelOfZoom + center.at(1)};
-        displayArray(generateMandelbrot(p1, p2, levelOfZoom));
+        displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, levelOfZoom));
         std::cin >> input;
     }
 
