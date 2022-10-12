@@ -51,7 +51,7 @@ void displayArray(std::vector<std::vector<int>> array) {
         }
         std::cout << std::endl;
     }
-    std::cout << "[+] for zoom in, [-] for zoom out, [a/A] for go to left, [d/D] for go to right, [w/W] for go up, [s/S] for go down" <<std::endl;
+    std::cout << "[+] for zoom in, [-] for zoom out, [a/A] for go to left, [d/D] for go to right, [w/W] for go up, [s/S] for go down, [q] to quit" <<std::endl;
 }
 
 double calculateGraphX(int xRef, double x1, double x2, double levelOfZoom, int numberOfX) {
@@ -135,6 +135,8 @@ generateMandelbrot(std::array<double, 2> p1, std::array<double, 2> p2, double le
             case 'S':
                 offesetY -= 0.1 / levelOfZoom;
                 break;
+            case 'q' :
+                goto end;
         }
         center = {offesetX, offesetY};
         p1 = {x1 / levelOfZoom + center.at(0), y1 / levelOfZoom + center.at(1)}, p2 = {
@@ -142,6 +144,7 @@ generateMandelbrot(std::array<double, 2> p1, std::array<double, 2> p2, double le
         displayArray(generateMandelbrot(p1, p2, levelOfZoom));
         cin >> input;
     }
+    end:
 
     return 0;
 }
