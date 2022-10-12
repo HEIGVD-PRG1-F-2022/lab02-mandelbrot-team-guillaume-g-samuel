@@ -1,35 +1,18 @@
 /*
  * Labo: mandelbrot
- * Release date: october 2022
- * Project: A small mandelbrot implementation in the command line in C++
+ * Date: 12.10.2022
+ * Description: The main file. Contains the display too.
  * Authors: Guillaume Gonin and Samuel Roland
  */
+#include <iostream>
+#include <vector>
 #include <array>
 #include <cmath>
-#include <cstdlib>
-#include <iostream>
 #include <string>
-#include <vector>
 
-const int max_iteration = 1000;
+#include "mandelBrot.h"
+#include "env.h"
 
-// Implementation of this pseudocode:
-// https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings
-int generate(double x0, double y0) {
-
-    double x = 0.0;
-    double y = 0.0;
-
-    int iteration = 0;
-    double xTemp;
-    while (x * x + y * y <= 2 * 2 && iteration < max_iteration) {
-        xTemp = x * x - y * y + x0;
-        y = 2 * x * y + y0;
-        x = xTemp;
-        iteration++;
-    }
-    return iteration;
-}
 
 void color(int val) {
     std::array<int, 7> colors = {34, 30, 36, 32, 31, 33, 35};
@@ -53,59 +36,12 @@ void displayArray(std::vector<std::vector<int>> array) {
         std::cout << std::endl;
     }
     std::cout
-        << "[+] for zoom in, [-] for zoom out, [a/A] for go to left, [d/D] for "
-           "go to right, [w/W] for go up, [s/S] for go down, [q] to quit"
-        << std::endl;
+            << "[+] for zoom in, [-] for zoom out, [a/A] for go to left, [d/D] for "
+               "go to right, [w/W] for go up, [s/S] for go down, [q] to quit"
+            << std::endl;
 }
 
-double calculateGraphX(int xRef, double x1, double x2, int numberOfX) {
-    /* nX,      nY,   levelOfZoom, FocusPoint
-     height, width,      0.7,       {0, 0}*/
-    double intervaleOfX = (x2 - x1) / numberOfX;
-
-    return x1 + intervaleOfX * xRef;
-    /*   double y0 = focusPoint.at(1) + intervaleOfY * pY;
-
-       if (focusPoint.at(0) - x1 > intervaleOfX * pX)
-           x0 = x1 + intervaleOfX * pX;*/
-}
-
-double calculateGraphY(int yRef, double y1, double y2, int numberOfY) {
-    double intervaleOfY = (y2 - y1) / numberOfY;
-
-    return y1 + intervaleOfY * yRef;
-}
-
-std::vector<std::vector<int>>
-calcRect(std::array<double, 2> p1, std::array<double, 2> p2, int nX, int nY) {
-
-    std::vector<std::vector<int>> array(nX, std::vector<int>(nY, 0));
-
-    for (int x = 0; x < array.size(); x++) {
-        for (int y = 0; y < array.at(0).size(); y++) {
-
-            double graphX =
-                calculateGraphX(x, p1.at(0), p2.at(0), array.size() - 1);
-            double graphY =
-                calculateGraphY(y, p1.at(1), p2.at(1), array.at(0).size() - 1);
-
-            array.at(x).at(y) = generate(graphX, graphY);
-        }
-    }
-
-    return array;
-}
-
-std::vector<std::vector<int>> calcRect(std::array<double, 2> pC, double width,
-                                       double height, int nX, int nY,
-                                       double zoom) {
-    std::array<double, 2> p1 = {pC.at(0) - (width / 2) / zoom,
-                                pC.at(1) + (height / 2) / zoom},
-                          p2 = {pC.at(0) + (width / 2) / zoom,
-                                pC.at(1) - (height / 2) / zoom};
-
-    return calcRect(p1, p2, nX, nY);
-}
+using namespace std;
 
 int main() {
     const double x1 = -2;
@@ -124,32 +60,32 @@ int main() {
     std::string input;
     std::getline(std::cin, input);
     while (true) {
-        switch ((char)input.at(0)) {
-        case '+':
-            levelOfZoom = levelOfZoom == 1 ? pow(levelOfZoom + 1, 2)
-                                           : pow(levelOfZoom, 2);
-            break;
-        case '-':
-            levelOfZoom = levelOfZoom == 2 ? 1 : sqrt(levelOfZoom);
-            break;
-        case 'd':
-        case 'D':
-            offesetX += 0.1 / levelOfZoom;
-            break;
-        case 'a':
-        case 'A':
-            offesetX -= 0.1 / levelOfZoom;
-            break;
-        case 'w':
-        case 'W':
-            offesetY += 0.1 / levelOfZoom;
-            break;
-        case 's':
-        case 'S':
-            offesetY -= 0.1 / levelOfZoom;
-            break;
-        case 'q':
-            return EXIT_SUCCESS;
+        switch ((char) input.at(0)) {
+            case '+':
+                levelOfZoom = levelOfZoom == 1 ? levelOfZoom + 1
+                                               : pow(levelOfZoom, 2);
+                break;
+            case '-':
+                levelOfZoom = levelOfZoom == 2 ? 1 : sqrt(levelOfZoom);
+                break;
+            case 'd':
+            case 'D':
+                offesetX += 0.1 / levelOfZoom;
+                break;
+            case 'a':
+            case 'A':
+                offesetX -= 0.1 / levelOfZoom;
+                break;
+            case 'w':
+            case 'W':
+                offesetY += 0.1 / levelOfZoom;
+                break;
+            case 's':
+            case 'S':
+                offesetY -= 0.1 / levelOfZoom;
+                break;
+            case 'q':
+                return EXIT_SUCCESS;
         }
         center = {offesetX, offesetY};
         displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, levelOfZoom));
