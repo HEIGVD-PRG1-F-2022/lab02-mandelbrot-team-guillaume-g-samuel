@@ -4,11 +4,12 @@
  * Project: A small mandelbrot implementation in the command line in C++
  * Authors: Guillaume Gonin and Samuel Roland
  */
-#include <iostream>
-#include <vector>
 #include <array>
 #include <cmath>
+#include <cstdlib>
+#include <iostream>
 #include <string>
+#include <vector>
 
 const int max_iteration = 1000;
 
@@ -51,10 +52,14 @@ void displayArray(std::vector<std::vector<int>> array) {
         }
         std::cout << std::endl;
     }
-    std::cout << "[+] for zoom in, [-] for zoom out, [a/A] for go to left, [d/D] for go to right, [w/W] for go up, [s/S] for go down, [q] to quit" <<std::endl;
+    std::cout
+        << "[+] for zoom in, [-] for zoom out, [a/A] for go to left, [d/D] for "
+           "go to right, [w/W] for go up, [s/S] for go down, [q] to quit"
+        << std::endl;
 }
 
-double calculateGraphX(int xRef, double x1, double x2, double levelOfZoom, int numberOfX) {
+double calculateGraphX(int xRef, double x1, double x2, double levelOfZoom,
+                       int numberOfX) {
     /* nX,      nY,   levelOfZoom, FocusPoint
      height, width,      0.7,       {0, 0}*/
     double intervaleOfX = (x2 - x1) / numberOfX;
@@ -66,14 +71,16 @@ double calculateGraphX(int xRef, double x1, double x2, double levelOfZoom, int n
            x0 = x1 + intervaleOfX * pX;*/
 }
 
-double calculateGraphY(int yRef, double y1, double y2, double levelOfZoom, int numberOfY) {
+double calculateGraphY(int yRef, double y1, double y2, double levelOfZoom,
+                       int numberOfY) {
     double intervaleOfY = (y2 - y1) / numberOfY;
 
     return y1 + intervaleOfY * yRef;
 }
 
-std::vector<std::vector<int>>
-generateMandelbrot(std::array<double, 2> p1, std::array<double, 2> p2, double levelOfZoom) {
+std::vector<std::vector<int>> generateMandelbrot(std::array<double, 2> p1,
+                                                 std::array<double, 2> p2,
+                                                 double levelOfZoom) {
 
     int width = 60, height = 60;
     std::vector<std::vector<int>> array(width, std::vector<int>(height, 0));
@@ -81,19 +88,19 @@ generateMandelbrot(std::array<double, 2> p1, std::array<double, 2> p2, double le
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array.at(0).size(); y++) {
 
-            double graphX = calculateGraphX(x, p1.at(0), p2.at(0), levelOfZoom, array.size() - 1);
-            double graphY = calculateGraphY(y, p1.at(1), p2.at(1), levelOfZoom, array.at(0).size() - 1);
+            double graphX = calculateGraphX(x, p1.at(0), p2.at(0), levelOfZoom,
+                                            array.size() - 1);
+            double graphY = calculateGraphY(y, p1.at(1), p2.at(1), levelOfZoom,
+                                            array.at(0).size() - 1);
 
             array.at(x).at(y) = generate(graphX, graphY);
         }
     }
 
     return array;
-
 }
 
-
-
+int main() {
     const double x1 = -2;
     const double y1 = 1.12;
     const double x2 = 0.47;
@@ -105,46 +112,48 @@ generateMandelbrot(std::array<double, 2> p1, std::array<double, 2> p2, double le
 
     std::array<double, 2> center = {offesetX, offesetY};
 
-    std::array<double, 2> p1 = {x1 / levelOfZoom + center.at(0), y1 / levelOfZoom + center.at(1)}, p2 = {
-            x2 / levelOfZoom + center.at(0), y2 / levelOfZoom + center.at(1)};
+    std::array<double, 2> p1 = {x1 / levelOfZoom + center.at(0),
+                                y1 / levelOfZoom + center.at(1)},
+                          p2 = {x2 / levelOfZoom + center.at(0),
+                                y2 / levelOfZoom + center.at(1)};
 
     displayArray(generateMandelbrot(p1, p2, levelOfZoom));
     std::string input;
     std::getline(std::cin, input);
     while (true) {
-        switch ((char) input.at(0)) {
-            case '+':
-                levelOfZoom = levelOfZoom == 1 ? pow(levelOfZoom+1, 2) : pow(levelOfZoom, 2);
-                break;
-            case '-':
-                levelOfZoom = levelOfZoom == 2 ? 1 : sqrt(levelOfZoom);
-                break;
-            case 'd':
-            case 'D':
-                offesetX += 0.1 / levelOfZoom;
-                break;
-            case 'a':
-            case 'A':
-                offesetX -= 0.1 / levelOfZoom;
-                break;
-            case 'w':
-            case 'W':
-                offesetY += 0.1 / levelOfZoom;
-                break;
-            case 's':
-            case 'S':
-                offesetY -= 0.1 / levelOfZoom;
-                break;
-            case 'q' :
-                goto end;
+        switch ((char)input.at(0)) {
+        case '+':
+            levelOfZoom = levelOfZoom == 1 ? pow(levelOfZoom + 1, 2)
+                                           : pow(levelOfZoom, 2);
+            break;
+        case '-':
+            levelOfZoom = levelOfZoom == 2 ? 1 : sqrt(levelOfZoom);
+            break;
+        case 'd':
+        case 'D':
+            offesetX += 0.1 / levelOfZoom;
+            break;
+        case 'a':
+        case 'A':
+            offesetX -= 0.1 / levelOfZoom;
+            break;
+        case 'w':
+        case 'W':
+            offesetY += 0.1 / levelOfZoom;
+            break;
+        case 's':
+        case 'S':
+            offesetY -= 0.1 / levelOfZoom;
+            break;
+        case 'q':
+            return EXIT_SUCCESS;
         }
         center = {offesetX, offesetY};
-        p1 = {x1 / levelOfZoom + center.at(0), y1 / levelOfZoom + center.at(1)}, p2 = {
-                x2 / levelOfZoom + center.at(0), y2 / levelOfZoom + center.at(1)};
+        p1 = {x1 / levelOfZoom + center.at(0), y1 / levelOfZoom + center.at(1)},
+        p2 = {x2 / levelOfZoom + center.at(0), y2 / levelOfZoom + center.at(1)};
         displayArray(generateMandelbrot(p1, p2, levelOfZoom));
-        cin >> input;
+        std::cin >> input;
     }
-    end:
 
-    return 0;
+    return EXIT_SUCCESS;
 }
