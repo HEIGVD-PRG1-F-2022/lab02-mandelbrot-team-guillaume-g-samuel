@@ -13,6 +13,8 @@
 #include "mandelBrot.h"
 #include "env.h"
 
+//#include <windows.h>
+
 
 void color(int val) {
     std::array<int, 7> colors = {34, 30, 36, 32, 31, 33, 35};
@@ -44,6 +46,8 @@ void displayArray(std::vector<std::vector<int>> array) {
 using namespace std;
 
 int main() {
+    //system(("chcp "s + std::to_string(CP_UTF8)).c_str());
+
     const double x1 = -2;
     const double y1 = 1.12;
     const double x2 = 0.47;
