@@ -1,16 +1,29 @@
-/* Labo: mandelbrot
- * Date: 12.10.2022
-* Description: A small mandelbrot implementation in the command line in C++
- * Authors: Guillaume Gonin and Samuel Roland
+/**
+ * A small mandelbrot implementation in the command line in C++
+ *
+ * @name mandelbrot
+ * @date 12.10.2022
+ * @authors Guillaume Gonin and Samuel Roland
  */
 
-#include "mandelBrot.h"
+//Externals imports
 #include <vector>
 #include <array>
 
+//Internals imports
+#include "mandelBrot.h"
 
-// Implementation of this pseudocode:
-// https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings
+
+/**
+ * Generate a point of the mandelbrot
+ *
+ * Implementation of this pseudocode:
+ * https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings
+ *
+ * @param x0 coordX of the point of the mandelbrot
+ * @param y0 coordY of the point of the mandelbrot
+ * @return the number of iteration done
+ */
 int generate(double x0, double y0) {
 
     double x = 0.0;
@@ -27,31 +40,54 @@ int generate(double x0, double y0) {
     return iteration;
 }
 
+/**
+ * Calculate the coordX scaled for the mandelbrot from the array's index
+ *
+ * @param xRef The array's index
+ * @param x1 coordX of the left-top corner
+ * @param x2 coordX of the right-bottom
+ * @param numberOfX number of point on X (basically the array x size)
+ * @return the scaled coordX
+ */
 double calculateGraphX(int xRef, double x1, double x2, int numberOfX) {
-    /* nX,      nY,   levelOfZoom, FocusPoint
-     height, width,      0.7,       {0, 0}*/
     double intervaleOfX = (x2 - x1) / numberOfX;
 
     return x1 + intervaleOfX * xRef;
-    /*   double y0 = focusPoint.at(1) + intervaleOfY * pY;
-
-       if (focusPoint.at(0) - x1 > intervaleOfX * pX)
-           x0 = x1 + intervaleOfX * pX;*/
 }
 
+/**
+ * Calculate the coordY scaled for the mandelbrot from the array's index
+ *
+ * @param yRef The array's index
+ * @param y1 coordY of the left-top corner
+ * @param y2 coordY of the right-bottom
+ * @param numberOfY number of point on Y (basically the array y size)
+ * @return the scaled coordY
+ */
 double calculateGraphY(int yRef, double y1, double y2, int numberOfY) {
     double intervaleOfY = (y2 - y1) / numberOfY;
 
     return y1 + intervaleOfY * yRef;
 }
 
+/**
+ * Calculate the number of iteration (the mandelbrot) for each point of an array (created on the method)
+ * Using: left-top and right-bottom scaled corner
+ *
+ * @param p1 left-top corner (x,y)
+ * @param p2 right bottom corner (x,y)
+ * @param nX size of the array on x
+ * @param nY size of the array on y
+ * @return return the array
+ */
 std::vector<std::vector<int>> calcRect(std::array<double, 2> p1, std::array<double, 2> p2, int nX, int nY) {
 
+    //create a two-dimensional vector based on the parameter given
     std::vector<std::vector<int>> array(nX, std::vector<int>(nY, 0));
 
     for (int x = 0; x < array.size(); x++) {
         for (int y = 0; y < array.at(0).size(); y++) {
-
+            //for each point, we need to calculate the scaled x,y point and then to assign on the two-dimensional vector the number of iteration.
             double graphX =
                     calculateGraphX(x, p1.at(0), p2.at(0), array.size() - 1);
             double graphY =
@@ -64,13 +100,27 @@ std::vector<std::vector<int>> calcRect(std::array<double, 2> p1, std::array<doub
     return array;
 }
 
+/**
+ * Calculate the number of iteration (the mandelbrot) for each point of an array (created on the method)
+ * Using: the center of the array (but scaled)
+ *
+ * @param pC center (x,y)
+ * @param width width of the scaled x (about width/2 = centerX)
+ * @param height height of the scaled y (about height/2 = centerY)
+ * @param nX size of the array on x
+ * @param nY size of the array on y
+ * @param zoom the zoom level
+ * @return return the array
+ */
 std::vector<std::vector<int>> calcRect(std::array<double, 2> pC, double width,
                                        double height, int nX, int nY,
                                        double zoom) {
+    //we calculate the two points (left-top and right-bottom corners) based on the width/height, the center and the zoom.
     std::array<double, 2> p1 = {pC.at(0) - (width / 2) / zoom,
                                 pC.at(1) + (height / 2) / zoom},
             p2 = {pC.at(0) + (width / 2) / zoom,
                   pC.at(1) - (height / 2) / zoom};
 
+    //we can now just use the normal method to generate the array.
     return calcRect(p1, p2, nX, nY);
 }
