@@ -21,7 +21,7 @@ This schema helps to have a visual understanding of the code and better understa
 ![table schema](img/table-schema.png)
 
 ## Pseudocode
-As asked by the teacher, we took this piece of pseudocode from [the Wikipedia page about Mandelbrot](https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings) and we implemented it in the `generate()` function (in `mandelBrot.cpp`).
+As asked by the teacher, we took this piece of pseudocode from [the Wikipedia page about Mandelbrot](https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings) and we implemented it in the `mandelbrot()` function (in `mandelBrot.cpp`).
 
 ```
 x := 0.0

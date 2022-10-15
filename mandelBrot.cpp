@@ -24,7 +24,7 @@
  * @param y0 coordY of the point of the mandelbrot
  * @return the number of iteration done
  */
-int generate(double x0, double y0) {
+int mandelbrot(double x0, double y0) {
 
     double x = 0.0;
     double y = 0.0;
@@ -93,7 +93,7 @@ std::vector<std::vector<int>> calcRect(std::array<double, 2> p1, std::array<doub
             double graphY =
                     calculateGraphY(y, p1.at(1), p2.at(1), array.at(0).size() - 1);
 
-            array.at(x).at(y) = generate(graphX, graphY);
+            array.at(x).at(y) = mandelbrot(graphX, graphY);
         }
     }
 

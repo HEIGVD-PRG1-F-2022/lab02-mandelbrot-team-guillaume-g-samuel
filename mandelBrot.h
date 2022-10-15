@@ -28,7 +28,7 @@
  * @param y0 coordY of the point of the mandelbrot
  * @return the number of iteration done
  */
-int generate(double x0, double y0);
+int mandelbrot(double x0, double y0);
 
 /**
  * Calculate the coordX scaled for the mandelbrot from the array's index

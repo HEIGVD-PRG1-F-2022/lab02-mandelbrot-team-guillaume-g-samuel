@@ -76,15 +76,15 @@ int main() {
     const double x2 = 0.47;
     const double y2 = -1.12;
 
-    //the offset allow use to navigate (right/left and up/down) into the mandelbrot, the levelOfZoom allow us to zoom in/out
+    //the offset allow use to navigate (right/left and up/down) into the mandelbrot, the zoom allow us to zoom in/out
     double offsetX = -0.761574;
     double offsetY = -0.0847596;
-    double levelOfZoom = 1;
+    double zoom = 1;
 
     std::array<double, 2> center = {offsetX, offsetY};
 
     //based on the value we got we can create the mandelbrot and display the array
-    displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, levelOfZoom));
+    displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom));
 
     //be aware of a user's input
     std::string input;
@@ -94,34 +94,34 @@ int main() {
     while (true) {
         switch ((char) input.at(0)) {
             case '+':
-                levelOfZoom = levelOfZoom == 1 ? levelOfZoom + 1
-                                               : pow(levelOfZoom, 2);
+                zoom = zoom == 1 ? zoom + 1
+                                 : pow(zoom, 2);
                 break;
             case '-':
-                levelOfZoom = levelOfZoom == 2 ? 1 : sqrt(levelOfZoom);
+                zoom = zoom == 2 ? 1 : sqrt(zoom);
                 break;
             case 'd':
             case 'D':
-                offsetX += 0.1 / levelOfZoom;
+                offsetX += 0.1 / zoom;
                 break;
             case 'a':
             case 'A':
-                offsetX -= 0.1 / levelOfZoom;
+                offsetX -= 0.1 / zoom;
                 break;
             case 'w':
             case 'W':
-                offsetY += 0.1 / levelOfZoom;
+                offsetY += 0.1 / zoom;
                 break;
             case 's':
             case 'S':
-                offsetY -= 0.1 / levelOfZoom;
+                offsetY -= 0.1 / zoom;
                 break;
             case 'q':
                 return EXIT_SUCCESS;
         }
         //we recalculate the center and display the new mandelbrot
         center = {offsetX, offsetY};
-        displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, levelOfZoom));
+        displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom));
         std::cin >> input;
     }
 
