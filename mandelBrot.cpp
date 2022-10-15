@@ -7,8 +7,8 @@
  */
 
 //Externals imports
-#include <vector>
 #include <array>
+#include <vector>
 
 //Internals imports
 #include "mandelBrot.h"
@@ -118,8 +118,8 @@ std::vector<std::vector<int>> calcRect(std::array<double, 2> pC, double width,
     //we calculate the two points (left-top and right-bottom corners) based on the width/height, the center and the zoom.
     std::array<double, 2> p1 = {pC.at(0) - (width / 2) / zoom,
                                 pC.at(1) + (height / 2) / zoom},
-            p2 = {pC.at(0) + (width / 2) / zoom,
-                  pC.at(1) - (height / 2) / zoom};
+                          p2 = {pC.at(0) + (width / 2) / zoom,
+                                pC.at(1) - (height / 2) / zoom};
 
     //we can now just use the normal method to generate the array.
     return calcRect(p1, p2, nX, nY);

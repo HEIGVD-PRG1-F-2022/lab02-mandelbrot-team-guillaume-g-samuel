@@ -7,19 +7,19 @@
  */
 
 //Externals imports
-#include <iostream>
-#include <vector>
 #include <array>
 #include <cmath>
+#include <iostream>
 #include <string>
+#include <vector>
 //If it's windows (32) we can import that for the color in terminal.
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
 //Internals imports
-#include "mandelBrot.h"
 #include "env.h"
+#include "mandelBrot.h"
 
 
 using namespace std;
@@ -33,13 +33,13 @@ void color(int val) {
     //an array containing all color to use, the last elements is used for the max_iteration only.
     array<int, 7> colors = {34, 30, 36, 32, 31, 33, 35};
 
-    int color = (val == max_iteration) ? colors.size()-1 : colors.at(val % colors.size()-1);
+    int color = (val == max_iteration) ? colors.size() - 1 : colors.at(val % colors.size() - 1);
 
     //This if will print the color point but only if it's more than a number of iteration (to have only the interesting shape printed).
-    if (val > colors.size()-1) {
+    if (val > colors.size() - 1) {
         cout << "\033[33;" << color << "m"
-                  << "@@"
-                  << "\033[0m";
+             << "@@"
+             << "\033[0m";
     } else {
         cout << "  ";
     }
@@ -65,10 +65,10 @@ void displayArray(std::vector<std::vector<int>> array) {
 }
 
 int main() {
-    //if it's windows (32) we can execute this line to change the terminal to UTF8 and as that have a display for ours colors.
-	#ifdef _WIN32
+//if it's windows (32) we can execute this line to change the terminal to UTF8 and as that have a display for ours colors.
+#ifdef _WIN32
     system(("chcp "s + std::to_string(CP_UTF8)).c_str());
-	#endif
+#endif
 
     //all coords describing the interesting part of the mandelbrot
     const double x1 = -2;

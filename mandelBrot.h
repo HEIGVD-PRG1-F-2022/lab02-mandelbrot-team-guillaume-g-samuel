@@ -7,8 +7,8 @@
  */
 
 //Externals imports
-#include <vector>
 #include <array>
+#include <vector>
 
 //internals imports
 #include "env.h"
