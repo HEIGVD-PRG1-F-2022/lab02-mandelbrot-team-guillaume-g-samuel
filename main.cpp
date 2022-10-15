@@ -33,7 +33,7 @@ void color(int val) {
     //an array containing all color to use, the last elements is used for the max_iteration only.
     array<int, 7> colors = {34, 30, 36, 32, 31, 33, 35};
 
-    int color = (val == max_iteration) ? colors.size() - 1 : colors.at(val % colors.size() - 1);
+    int color = (val == max_iteration) ? colors.size() - 1 : colors.at(val % (colors.size() - 1));
 
     //This if will print the color point but only if it's more than a number of iteration (to have only the interesting shape printed).
     if (val > colors.size() - 1) {
