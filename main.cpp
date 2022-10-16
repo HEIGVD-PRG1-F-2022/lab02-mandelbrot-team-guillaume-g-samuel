@@ -31,21 +31,20 @@ using namespace std;
  * Used to write a mandelbrot point with color depending of the number of iteration.
  *
  * @param val number of iteration
+ * @return the string to print with a color
  */
-void color(int val) {
+string color(int val) {
     //an array containing all color to use, the last elements is used for the max_iteration only.
     array<int, 7> colors = {34, 30, 36, 32, 31, 33, 35};
 
     int color = (val == max_iteration) ? colors.size() - 1 : colors.at(val % (colors.size() - 1));
 
     //This if will print the color point but only if it's more than a number of iteration (to have only the interesting shape printed).
+    string coloredText = "  ";
     if (val > colors.size() - 1) {
-        cout << "\033[33;" << color << "m"
-             << "@@"
-             << "\033[0m";
-    } else {
-        cout << "  ";
+        coloredText = "\033[33;" + to_string(color) + "m" + "@@" + "\033[0m";
     }
+    return coloredText;
 }
 
 /**
@@ -54,12 +53,15 @@ void color(int val) {
  * @param array The array to print
  */
 void displayArray(std::vector<std::vector<int>> array, string message = "") {
+    string rectangle = "";//big rectangle displayed containing all cases as string
+
     for (int y = 0; y < array.size(); y++) {
         for (int x = 0; x < array.at(y).size(); x++) {
-            color(array.at(x).at(y));
+            rectangle += color(array.at(x).at(y));
         }
-        std::cout << std::endl;
+        rectangle += "\n";
     }
+    cout << rectangle;
 
     //Print the message if defined
     cout << message << endl;
@@ -107,8 +109,8 @@ int main() {
         message = "";//empty the message
         switch (option) {
             case 'r':
-                usleep(100000);//sleep 100ms
-                zoom = zoom / 0.9;
+                usleep(50000);//sleep 100ms
+                zoom = zoom / 0.95;
                 break;
             case '+':
                 zoom = zoom == 1 ? zoom + 1
