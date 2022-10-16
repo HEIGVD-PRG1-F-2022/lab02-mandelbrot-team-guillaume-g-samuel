@@ -61,6 +61,7 @@ void displayArray(std::vector<std::vector<int>> array, string message = "") {
         }
         rectangle += "\n";
     }
+    printf("%c[%d;%df", 0x1B, 0, 0);//position the output cursor to the top left to visually overwrite the current rectangle
     cout << rectangle;
 
     //Print the message if defined
@@ -109,8 +110,8 @@ int main() {
         message = "";//empty the message
         switch (option) {
             case 'r':
-                usleep(50000);//sleep 100ms
-                zoom = zoom / 0.95;
+                usleep(10000);//sleep 100ms
+                zoom = zoom / 0.97;
                 break;
             case '+':
                 zoom = zoom == 1 ? zoom + 1
@@ -139,7 +140,7 @@ int main() {
         }
         //we recalculate the center and display the new mandelbrot
         center = {offsetX, offsetY};
-        system("clear");
+        // system("clear");
         displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom), message);
     } while (true);
 
