@@ -12,6 +12,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "unistd.h"
+
 //If it's windows (32) we can import that for the color in terminal.
 #ifdef _WIN32
 #include <windows.h>
@@ -89,16 +92,24 @@ int main() {
     string message;//a message for the user displayed above the options legend
 
     //based on the value we got we can create the mandelbrot and display the array
-    displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom));
+    displayArray(calcRect(center, x2 - x1, y1 - y2, 55, 55, zoom));
 
     //be aware of a user's input
-    std::string input;
-    std::getline(std::cin, input);
+    string input;
+    char option;
 
     //depending on the input we do the right action
-    while (true) {
-        switch ((char) input.at(0)) {
+    do {
+        if (option != 'r') {
+            std::cin >> input;
+            option = tolower((char) input.at(0));
+        }
         message = "";//empty the message
+        switch (option) {
+            case 'r':
+                usleep(100000);//sleep 100ms
+                zoom = zoom / 0.9;
+                break;
             case '+':
                 zoom = zoom == 1 ? zoom + 1
                                  : pow(zoom, 2);
@@ -107,19 +118,15 @@ int main() {
                 zoom = zoom == 2 ? 1 : sqrt(zoom);
                 break;
             case 'd':
-            case 'D':
                 offsetX += 0.1 / zoom;
                 break;
             case 'a':
-            case 'A':
                 offsetX -= 0.1 / zoom;
                 break;
             case 'w':
-            case 'W':
                 offsetY += 0.1 / zoom;
                 break;
             case 's':
-            case 'S':
                 offsetY -= 0.1 / zoom;
                 break;
             case 'q':
@@ -130,9 +137,9 @@ int main() {
         }
         //we recalculate the center and display the new mandelbrot
         center = {offsetX, offsetY};
-        std::cin >> input;
-    }
+        system("clear");
         displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom), message);
+    } while (true);
 
     return EXIT_SUCCESS;
 }
