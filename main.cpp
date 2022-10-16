@@ -50,17 +50,21 @@ void color(int val) {
  *
  * @param array The array to print
  */
-void displayArray(std::vector<std::vector<int>> array) {
+void displayArray(std::vector<std::vector<int>> array, string message = "") {
     for (int y = 0; y < array.size(); y++) {
         for (int x = 0; x < array.at(y).size(); x++) {
             color(array.at(x).at(y));
         }
         std::cout << std::endl;
     }
-    //we print a little line for explain the control keys.
+
+    //Print the message if defined
+    cout << message << endl;
+
+    //Print the options legend
     std::cout
-            << "[+] for zoom in, [-] for zoom out, [a/A] for go to left, [d/D] for "
-               "go to right, [w/W] for go up, [s/S] for go down, [q] to quit"
+            << "[r] run animation, [+] zoom in, [-] zoom out, [a/A] go left, [d/D] "
+               "go right, [w/W] go up, [s/S] go down, [q] quit"
             << std::endl;
 }
 
@@ -82,6 +86,7 @@ int main() {
     double zoom = 1;
 
     std::array<double, 2> center = {offsetX, offsetY};
+    string message;//a message for the user displayed above the options legend
 
     //based on the value we got we can create the mandelbrot and display the array
     displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom));
@@ -93,6 +98,7 @@ int main() {
     //depending on the input we do the right action
     while (true) {
         switch ((char) input.at(0)) {
+        message = "";//empty the message
             case '+':
                 zoom = zoom == 1 ? zoom + 1
                                  : pow(zoom, 2);
@@ -118,12 +124,15 @@ int main() {
                 break;
             case 'q':
                 return EXIT_SUCCESS;
+            default:
+                message = "Option '" + input + "' not supported...";
+                break;
         }
         //we recalculate the center and display the new mandelbrot
         center = {offsetX, offsetY};
-        displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom));
         std::cin >> input;
     }
+        displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom), message);
 
     return EXIT_SUCCESS;
 }
