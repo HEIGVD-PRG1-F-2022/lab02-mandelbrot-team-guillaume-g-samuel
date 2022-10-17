@@ -3,7 +3,7 @@ Small project for the PRG1 class, to implement a [Mandelbrot](https://en.wikiped
 The Mandelbrot set is a popular fractal that can be represented as an aesthetic image that you can zoom infinitly. Our project is to display a navigable mandelbrot in the terminal and that you are able to zoom in and out manually or see a animation with a predefined zoom.
 
 ## Visual appearance
-todo
+![appearance.png](img/appearance.png)
 
 ## Authors
 - Samuel Roland
