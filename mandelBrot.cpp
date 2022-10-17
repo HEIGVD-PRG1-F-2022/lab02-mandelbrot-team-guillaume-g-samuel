@@ -45,30 +45,30 @@ int mandelbrot(double x0, double y0) {
  * Calculate the coordX scaled for the mandelbrot from the array's index
  *
  * @param xRef The array's index
- * @param x1 coordX of the left-top corner
- * @param x2 coordX of the right-bottom
+ * @param X1 coordX of the left-top corner
+ * @param X2 coordX of the right-bottom
  * @param numberOfX number of point on X (basically the array x size)
  * @return the scaled coordX
  */
-double calculateGraphX(int xRef, double x1, double x2, int numberOfX) {
-    double intervaleOfX = (x2 - x1) / numberOfX;
+double calculateGraphX(int xRef, double X1, double X2, int numberOfX) {
+    double intervaleOfX = (X2 - X1) / numberOfX;
 
-    return x1 + intervaleOfX * xRef;
+    return X1 + intervaleOfX * xRef;
 }
 
 /**
  * Calculate the coordY scaled for the mandelbrot from the array's index
  *
  * @param yRef The array's index
- * @param y1 coordY of the left-top corner
- * @param y2 coordY of the right-bottom
+ * @param Y1 coordY of the left-top corner
+ * @param Y2 coordY of the right-bottom
  * @param numberOfY number of point on Y (basically the array y size)
  * @return the scaled coordY
  */
-double calculateGraphY(int yRef, double y1, double y2, int numberOfY) {
-    double intervaleOfY = (y2 - y1) / numberOfY;
+double calculateGraphY(int yRef, double Y1, double Y2, int numberOfY) {
+    double intervaleOfY = (Y2 - Y1) / numberOfY;
 
-    return y1 + intervaleOfY * yRef;
+    return Y1 + intervaleOfY * yRef;
 }
 
 /**

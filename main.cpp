@@ -81,10 +81,10 @@ int main() {
 #endif
 
     //all coords describing the interesting part of the mandelbrot
-    const double x1 = -2;
-    const double y1 = 1.12;
-    const double x2 = 0.47;
-    const double y2 = -1.12;
+    const double X1 = -2;
+    const double Y1 = 1.12;
+    const double X2 = 0.47;
+    const double Y2 = -1.12;
 
     //the offset allow use to navigate (right/left and up/down) into the mandelbrot, the zoom allow us to zoom in/out
     double offsetX = -0.761574;
@@ -95,7 +95,7 @@ int main() {
     string message;//a message for the user displayed above the options legend
 
     //based on the value we got we can create the mandelbrot and display the array
-    displayArray(calcRect(center, x2 - x1, y1 - y2, 55, 55, zoom));
+    displayArray(calcRect(center, X2 - X1, Y1 - Y2, 55, 55, zoom));
 
     //be aware of a user's input
     string input;
@@ -141,7 +141,7 @@ int main() {
         //we recalculate the center and display the new mandelbrot
         center = {offsetX, offsetY};
         // system("clear");
-        displayArray(calcRect(center, x2 - x1, y1 - y2, 60, 60, zoom), message);
+        displayArray(calcRect(center, X2 - X1, Y1 - Y2, 60, 60, zoom), message);
     } while (true);
 
     return EXIT_SUCCESS;
