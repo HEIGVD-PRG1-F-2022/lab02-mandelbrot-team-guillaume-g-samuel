@@ -61,7 +61,10 @@ void displayArray(vector<vector<int>> array, string message = "") {
         }
         rectangle += "\n";
     }
-    printf("%c[%d;%df", 0x1B, 0, 0);//position the output cursor to the top left to visually overwrite the current rectangle
+
+    //Position the output cursor to the top left to visually overwrite the current rectangle
+    //Help: https://stackoverflow.com/questions/54250401/how-to-control-a-cursor-position-in-c-console-application
+    printf("%c[%d;%df", 0x1B, 0, 0);
     cout << rectangle;
 
     //Print the message if defined
@@ -69,9 +72,18 @@ void displayArray(vector<vector<int>> array, string message = "") {
 
     //Print the options legend
     cout
-            << "[r] run animation, [+] zoom in, [-] zoom out, [a/A] go left, [d/D] "
-               "go right, [w/W] go up, [s/S] go down, [q] quit"
+            << "[r] run animation, [+] zoom in, [-] zoom out, [a/A] left, [d/D] "
+               "right, [w/W] up, [s/S] down, [q] quit"
             << endl;
+}
+
+//Clear the screen (support Windows, Linux and MacOS)
+void clearScreen() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
 
 int main() {
@@ -80,38 +92,45 @@ int main() {
     system(("chcp "s + to_string(CP_UTF8)).c_str());
 #endif
 
-    //all coords describing the interesting part of the mandelbrot
+    //Starting coordinates of the mandelbrot set (the X and Y point of the plan where the entire figure is visible)
     const double X1 = -2;
     const double Y1 = 1.12;
     const double X2 = 0.47;
     const double Y2 = -1.12;
 
-    //the offset allow use to navigate (right/left and up/down) into the mandelbrot, the zoom allow us to zoom in/out
+    //Visual table sizes (numbers of cases displayed in height and width, each case contains "@@")
+    const int ARRAY_WIDTH = 55;
+    const int ARRAY_HEIGHT = 55;
+
+    //The offsets to navigate (right/left/up/down) into the mandelbrot, the zoom level allow us to zoom in/out
     double offsetX = -0.761574;
     double offsetY = -0.0847596;
     double zoom = 1;
 
     array<double, 2> center = {offsetX, offsetY};
     string message;//a message for the user displayed above the options legend
+    char option;   //the option given by the user
 
-    //based on the value we got we can create the mandelbrot and display the array
-    displayArray(calcRect(center, X2 - X1, Y1 - Y2, 55, 55, zoom));
+    clearScreen();
 
-    //be aware of a user's input
-    string input;
-    char option;
-
-    //depending on the input we do the right action
+    //Infinite loop with display of array, asking for option, displaying the array again, etc
     do {
+        //Calculate the array values to fill the values for each case, and display the array
+        displayArray(calcRect(center, X2 - X1, Y1 - Y2, ARRAY_WIDTH, ARRAY_HEIGHT, zoom), message);
+
+        //Read the user option if the last given option wasn't the zoom animation
         if (option != 'r') {
-            cin >> input;
-            option = tolower((char) input.at(0));
+            cout << "Your choice: ";
+            cin >> option;
+            option = tolower(option);
+            clearScreen();
         }
+
         message = "";//empty the message
         switch (option) {
             case 'r':
-                usleep(10000);//sleep 100ms
-                zoom = zoom / 0.97;
+                usleep(10000);     //sleep 100ms
+                zoom = zoom / 0.97;//increase the zoom level
                 break;
             case '+':
                 zoom = zoom == 1 ? zoom + 1
@@ -135,13 +154,13 @@ int main() {
             case 'q':
                 return EXIT_SUCCESS;
             default:
-                message = "Option '" + input + "' not supported...";
+                message = "Option '";
+                message.append(1, option);
+                message += "' not supported...";
                 break;
         }
-        //we recalculate the center and display the new mandelbrot
+        //Redefine the center point after the change of offsets values
         center = {offsetX, offsetY};
-        // system("clear");
-        displayArray(calcRect(center, X2 - X1, Y1 - Y2, 60, 60, zoom), message);
     } while (true);
 
     return EXIT_SUCCESS;
