@@ -18,6 +18,8 @@
 
 #endif
 
+using namespace std;
+
 /**
  * Generate a point of the mandelbrot
  *
@@ -62,7 +64,7 @@ double calculateGraphY(int yRef, double y1, double y2, int numberOfY);
  * @param nY size of the array on y
  * @return return the array
  */
-std::vector<std::vector<int>> calcRect(std::array<double, 2> p1, std::array<double, 2> p2, int nX, int nY);
+vector<vector<int>> calcRect(array<double, 2> p1, array<double, 2> p2, int nX, int nY);
 
 /**
  * Calculate the number of iteration (the mandelbrot) for each point of an array (created on the method)
@@ -76,5 +78,5 @@ std::vector<std::vector<int>> calcRect(std::array<double, 2> p1, std::array<doub
  * @param zoom the zoom level
  * @return return the array
  */
-std::vector<std::vector<int>>
-calcRect(std::array<double, 2> pC, double width, double height, int nX, int nY, double zoom);
+vector<vector<int>>
+calcRect(array<double, 2> pC, double width, double height, int nX, int nY, double zoom);

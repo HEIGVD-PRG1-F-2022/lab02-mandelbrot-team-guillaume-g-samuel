@@ -52,7 +52,7 @@ string color(int val) {
  *
  * @param array The array to print
  */
-void displayArray(std::vector<std::vector<int>> array, string message = "") {
+void displayArray(vector<vector<int>> array, string message = "") {
     string rectangle = "";//big rectangle displayed containing all cases as string
 
     for (int y = 0; y < array.size(); y++) {
@@ -68,16 +68,16 @@ void displayArray(std::vector<std::vector<int>> array, string message = "") {
     cout << message << endl;
 
     //Print the options legend
-    std::cout
+    cout
             << "[r] run animation, [+] zoom in, [-] zoom out, [a/A] go left, [d/D] "
                "go right, [w/W] go up, [s/S] go down, [q] quit"
-            << std::endl;
+            << endl;
 }
 
 int main() {
 //if it's windows (32) we can execute this line to change the terminal to UTF8 and as that have a display for ours colors.
 #ifdef _WIN32
-    system(("chcp "s + std::to_string(CP_UTF8)).c_str());
+    system(("chcp "s + to_string(CP_UTF8)).c_str());
 #endif
 
     //all coords describing the interesting part of the mandelbrot
@@ -91,7 +91,7 @@ int main() {
     double offsetY = -0.0847596;
     double zoom = 1;
 
-    std::array<double, 2> center = {offsetX, offsetY};
+    array<double, 2> center = {offsetX, offsetY};
     string message;//a message for the user displayed above the options legend
 
     //based on the value we got we can create the mandelbrot and display the array
@@ -104,7 +104,7 @@ int main() {
     //depending on the input we do the right action
     do {
         if (option != 'r') {
-            std::cin >> input;
+            cin >> input;
             option = tolower((char) input.at(0));
         }
         message = "";//empty the message
