@@ -9,4 +9,4 @@
 //Internals imports
 #include "env.h"
 
-const int max_iteration = 1000;
+const int MAX_ITERATION = 1000;

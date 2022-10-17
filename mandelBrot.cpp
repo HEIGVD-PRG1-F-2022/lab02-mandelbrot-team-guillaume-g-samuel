@@ -32,7 +32,7 @@ int mandelbrot(double x0, double y0) {
 
     int iteration = 0;
     double xTemp;
-    while (x * x + y * y <= 2 * 2 && iteration < max_iteration) {
+    while (x * x + y * y <= 2 * 2 && iteration < MAX_ITERATION) {
         xTemp = x * x - y * y + x0;
         y = 2 * x * y + y0;
         x = xTemp;

@@ -11,4 +11,4 @@
 
 #endif
 
-extern const int max_iteration;
+extern const int MAX_ITERATION;
