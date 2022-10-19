@@ -3,4 +3,4 @@ project(Mandelbrot)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Mandelbrot main.cpp)
+add_executable(Mandelbrot main.cpp mandelBrot.cpp mandelBrot.h env.cpp env.h)
